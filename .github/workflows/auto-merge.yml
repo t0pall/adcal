@@ -2,7 +2,7 @@ name: Auto Merge dev to main
 
 on:
   schedule:
-    - cron: '20 6 * * *' # Каждый день в полночь (UTC+3)
+    - cron: '40 6 * * *' 
 
 jobs:
   merge:
