@@ -1,0 +1,34 @@
+name: Auto Merge dev to main
+
+on:
+  schedule:
+    - cron: '* * * * *' 
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Fetch all branches
+        run: git fetch origin
+
+      - name: Checkout main
+        run: git checkout main
+
+      - name: Pull latest changes to main
+        run: git pull origin main
+
+      - name: Set up Git identity
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+
+      - name: Merge dev into main
+        run: |
+          git merge origin/dev --allow-unrelated-histories --no-ff --no-edit -X theirs
+          git push origin main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
