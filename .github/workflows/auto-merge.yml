@@ -2,7 +2,7 @@ name: Auto Merge dev to main
 
 on:
   schedule:
-    - cron: '0 21 * * *' # Каждый день в полночь (UTC+3)
+    - cron: '20 6 * * *' # Каждый день в полночь (UTC+3)
   push:
     branches:
       - dev  # Срабатывает при пушах в dev, если хотите выполнять слияние при каждом пуше в dev
@@ -31,7 +31,7 @@ jobs:
 
       - name: Merge dev into main
         run: |
-          git merge origin/dev --allow-unrelated-histories --no-ff --no-edit
+          git merge origin/dev --allow-unrelated-histories --no-ff --no-edit -X theirs
           git push origin main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
