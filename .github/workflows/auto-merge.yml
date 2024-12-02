@@ -3,9 +3,6 @@ name: Auto Merge dev to main
 on:
   schedule:
     - cron: '20 6 * * *' # Каждый день в полночь (UTC+3)
-  push:
-    branches:
-      - dev  # Срабатывает при пушах в dev, если хотите выполнять слияние при каждом пуше в dev
 
 jobs:
   merge:
