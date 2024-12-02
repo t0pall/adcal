@@ -2,7 +2,7 @@ name: Auto Merge dev to main
 
 on:
   schedule:
-    - cron: '0 6 * * *' # Каждый день в 9 утра (UTC+3)
+    - cron: '0 21 * * *' # Каждый день в полночь (UTC+3)
   push:
     branches:
       - dev  # Срабатывает при пушах в dev, если хотите выполнять слияние при каждом пуше в dev
@@ -15,14 +15,23 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Git
-        uses: actions/setup-git@v3
+      - name: Fetch all branches
+        run: git fetch origin
+
+      - name: Checkout main
+        run: git checkout main
+
+      - name: Pull latest changes to main
+        run: git pull origin main
+
+      - name: Set up Git identity
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
 
       - name: Merge dev into main
         run: |
-          git fetch origin
-          git checkout main
-          git merge origin/dev --no-ff --no-edit
+          git merge origin/dev --allow-unrelated-histories --no-ff --no-edit
           git push origin main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
